@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Oferta extends Model
+{
+    protected $fillable = [
+        'titulo',
+        'descricao',
+        'salario',
+        'data_inicio',
+        'data_fim',
+        'status_id',
+        'endereco_id',
+        'contratante_id',
+        'contratado_id'
+    ];
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function endereco(): BelongsTo
+    {
+        return $this->belongsTo(Endereco::class);
+    }
+
+    public function contratante(): BelongsTo
+    {
+        return $this->belongsTo(Contratante::class);
+    }
+
+    public function contratado(): BelongsTo
+    {
+        return $this->belongsTo(Contratado::class);
+    }
+
+    public function candidaturas(): HasMany
+    {
+        return $this->hasMany(Candidatura::class);
+    }
+
+    public function avaliacoes(): HasMany
+    {
+        return $this->hasMany(Avaliacao::class);
+    }
+}
