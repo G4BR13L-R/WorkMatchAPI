@@ -5,48 +5,24 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContratanteLoginRequest;
 use App\Http\Requests\ContratanteRegisterRequest;
-use App\Models\Contratante;
-use App\Models\User;
+use App\Services\Auth\ContratanteAuthService;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class ContratanteAuthController extends Controller
 {
+    public function __construct(private ContratanteAuthService $contratanteAuthService) {}
+
     public function register(ContratanteRegisterRequest $request)
     {
         $data = $request->validated();
 
         try {
-            DB::beginTransaction();
-
-            $user = User::create([
-                'nome' => $data['nome'],
-                'email' => $data['email'],
-                'tipo' => 'contratante',
-                'password' => Hash::make($data['password']),
-            ]);
-
-            $contratante = Contratante::create([
-                'user_id' => $user->id,
-                'nome' => $data['nome'],
-                'telefone' => $data['telefone'],
-                'email' => $data['email'],
-                'cnpj' => $data['cnpj'],
-                'razao_social' => $data['razao_social'],
-                'nome_fantasia' => $data['nome_fantasia'],
-            ]);
-
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            DB::commit();
-
-            return response()->json([
-                'user' => $contratante,
-                'token' => $token,
-            ], 201);
-        } catch (\Exception $e) {
+            $contratante = $this->contratanteAuthService->register($data);
+            return response()->json($contratante, 201);
+        } catch (Exception $e) {
+            Log::error($e);
             return response()->json(['error' => 'Erro ao registrar usuário: ' . $e->getMessage()], 500);
         }
     }
@@ -55,23 +31,9 @@ class ContratanteAuthController extends Controller
     {
         $data = $request->validated();
 
-        $contratante = User::where([
-            ['email', '=', $data['email']],
-            ['tipo', '=', 'contratante']
-        ])->first();
+        $contratante = $this->contratanteAuthService->login($data);
 
-        if (!$contratante || !Hash::check($data['password'], $contratante->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['As credenciais estão incorretas.'],
-            ]);
-        }
-
-        $token = $contratante->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'user' => $contratante,
-            'token' => $token,
-        ]);
+        return response()->json($contratante, 200);
     }
 
     public function logout(Request $request)
