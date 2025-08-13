@@ -30,4 +30,11 @@ class Endereco extends Model
     {
         return $this->hasMany(Oferta::class);
     }
+
+    public function toArray()
+    {
+        $data = parent::toArray();
+        $data['cidade'] = $this->cidade ? $this->cidade->toArray() : null;
+        return $data;
+    }
 }
