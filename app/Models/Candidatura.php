@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Candidatura extends Model
 {
     protected $fillable = ['contratado_id', 'oferta_id', 'status'];
+    protected $hidden = ['created_at', 'updated_at', 'contratado_id', 'oferta_id'];
 
     public function contratado(): BelongsTo
     {

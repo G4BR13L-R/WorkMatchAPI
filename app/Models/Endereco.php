@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Endereco extends Model
 {
     protected $fillable = ['logradouro', 'numero', 'complemento', 'bairro', 'cidade_id'];
+    protected $hidden = ['created_at', 'updated_at', 'cidade_id'];
 
     public function cidade(): BelongsTo
     {

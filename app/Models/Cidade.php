@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Cidade extends Model
 {
     protected $fillable = ['descricao', 'estado_id'];
+    protected $hidden = ['created_at', 'updated_at', 'estado_id'];
 
     public function estado(): BelongsTo
     {

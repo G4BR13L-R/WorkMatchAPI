@@ -16,6 +16,8 @@ class ExperienciaProfissional extends Model
         'contratado_id'
     ];
 
+    protected $hidden = ['created_at', 'updated_at', 'contratado_id'];
+
     public function contratado(): BelongsTo
     {
         return $this->belongsTo(Contratado::class);

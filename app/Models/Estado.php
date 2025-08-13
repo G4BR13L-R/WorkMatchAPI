@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Estado extends Model
 {
     protected $fillable = ['descricao', 'sigla'];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function cidades(): HasMany
     {

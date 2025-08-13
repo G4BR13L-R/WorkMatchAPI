@@ -20,6 +20,15 @@ class Oferta extends Model
         'contratado_id'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'status_id',
+        'endereco_id',
+        'contratante_id',
+        'contratado_id'
+    ];
+
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);

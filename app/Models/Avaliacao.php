@@ -17,6 +17,14 @@ class Avaliacao extends Model
         'comentario'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'autor_id',
+        'destinatario_id',
+        'oferta_id'
+    ];
+
     public function oferta(): BelongsTo
     {
         return $this->belongsTo(Oferta::class);

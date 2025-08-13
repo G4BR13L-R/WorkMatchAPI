@@ -20,6 +20,13 @@ class Contratado extends Model
         'endereco_id'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'user_id',
+        'endereco_id'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
