@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\ContratadoAuthController;
 use App\Http\Controllers\Auth\ContratanteAuthController;
+use App\Http\Controllers\Contratante\ContratanteController;
 use Illuminate\Support\Facades\Route;
 
 // Rotas publicas
@@ -22,7 +23,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('contratado/sessions', [ContratadoAuthController::class, 'logout']);
 
     Route::prefix('contratante')->middleware('check.type:contratante')->group(function () {
-        // Rotas protegidas para contratantes
+
+        Route::get('perfil', [ContratanteController::class, 'show']);
+        Route::put('perfil', [ContratanteController::class, 'update']);
+        Route::put('perfil/senha', [ContratanteController::class, 'updatePassword']);
+        Route::delete('perfil', [ContratanteController::class, 'delete']);
     });
 
     Route::prefix('contratado')->middleware('check.type:contratado')->group(function () {
