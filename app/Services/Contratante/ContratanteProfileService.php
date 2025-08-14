@@ -2,8 +2,9 @@
 
 namespace App\Services\Contratante;
 
+use App\Models\Contratante;
 use App\Models\Endereco;
-use Exception;
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +22,35 @@ class ContratanteProfileService
         }
 
         return $user->contratante->toArray();
+    }
+
+    public function registerProfile(array $data)
+    {
+        return DB::transaction(function () use ($data) {
+            $user = User::create([
+                'nome' => $data['nome'],
+                'email' => $data['email'],
+                'tipo' => 'contratante',
+                'password' => Hash::make($data['password']),
+            ]);
+
+            $contratante = Contratante::create([
+                'user_id' => $user->id,
+                'nome' => $data['nome'],
+                'telefone' => $data['telefone'],
+                'email' => $data['email'],
+                'cnpj' => $data['cnpj'],
+                'razao_social' => $data['razao_social'],
+                'nome_fantasia' => $data['nome_fantasia'],
+            ]);
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return [
+                'contratante' => $contratante->toArray(),
+                'token' => $token,
+            ];
+        });
     }
 
     public function updateProfile($user, $data)

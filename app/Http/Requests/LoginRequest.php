@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContratadoLoginRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class ContratadoLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
+            'email' => 'required|string|email|exists:users,email',
             'password' => 'required|string|min:6',
         ];
     }
@@ -38,6 +38,7 @@ class ContratadoLoginRequest extends FormRequest
             'email.required' => 'O campo email é obrigatório.',
             'email.string' => 'O campo email deve ser uma string.',
             'email.email' => 'O campo email deve ser um endereço de email válido.',
+            'email.exists' => 'O email informado não está cadastrado.',
             'password.required' => 'O campo senha é obrigatório.',
             'password.string' => 'O campo senha deve ser uma string.',
             'password.min' => 'O campo senha deve ter pelo menos 6 caracteres.',

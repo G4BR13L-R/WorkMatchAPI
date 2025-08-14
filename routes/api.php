@@ -1,26 +1,19 @@
 <?php
 
-use App\Http\Controllers\Auth\ContratadoAuthController;
-use App\Http\Controllers\Auth\ContratanteAuthController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Contratado\ContratadoController;
 use App\Http\Controllers\Contratante\ContratanteController;
 use Illuminate\Support\Facades\Route;
 
 // Rotas publicas
-Route::prefix('contratante')->controller(ContratanteAuthController::class)->group(function () {
-    Route::post('register', 'register');
-    Route::post('sessions', 'login');
-});
-
-Route::prefix('contratado')->controller(ContratadoAuthController::class)->group(function () {
-    Route::post('register', 'register');
-    Route::post('sessions', 'login');
-});
+Route::post('sessions', [AuthController::class, 'login']);
+Route::post('contratante/perfil', [ContratanteController::class, 'store']);
+Route::post('contratado/perfil', [ContratadoController::class, 'store']);
 
 // Rotas protegidas
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::delete('contratante/sessions', [ContratanteAuthController::class, 'logout']);
-    Route::delete('contratado/sessions', [ContratadoAuthController::class, 'logout']);
+    Route::delete('sessions', [AuthController::class, 'logout']);
 
     Route::prefix('contratante')->middleware('check.type:contratante')->group(function () {
 

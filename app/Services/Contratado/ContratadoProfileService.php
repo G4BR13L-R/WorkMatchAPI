@@ -1,16 +1,28 @@
 <?php
 
-namespace App\Services\Auth;
+namespace App\Services\Contratado;
 
 use App\Models\Contratado;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
-class ContratadoAuthService
+class ContratadoProfileService
 {
-    public function register(array $data)
+    public function getProfile($user)
+    {
+        if (!$user) {
+            abort(404, 'Usuário não encontrado');
+        }
+
+        if (!$user->contratado) {
+            abort(404, 'Perfil de contratado não encontrado');
+        }
+
+        return $user->contratado->toArray();
+    }
+
+    public function registerProfile(array $data)
     {
         return DB::transaction(function () use ($data) {
             $user = User::create([
@@ -37,26 +49,5 @@ class ContratadoAuthService
                 'token' => $token,
             ];
         });
-    }
-
-    public function login(array $data)
-    {
-        $user = User::where([
-            ['email', '=', $data['email']],
-            ['tipo', '=', 'contratado']
-        ])->first();
-
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['As credenciais estão incorretas.'],
-            ]);
-        }
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return [
-            'user' => $user->toArray(),
-            'token' => $token,
-        ];
     }
 }
