@@ -86,7 +86,9 @@ class ContratanteProfileService
             abort(404, 'Perfil de contratante não encontrado');
         }
 
-        $user->contratante->delete();
-        $user->delete();
+        DB::transaction(function () use ($user) {
+            $user->contratante->delete();
+            $user->delete();
+        });
     }
 }
