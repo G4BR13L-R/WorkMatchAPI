@@ -33,7 +33,7 @@ class ContratadoAuthService
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return [
-                'contratado' => $contratado,
+                'contratado' => $contratado->toArray(),
                 'token' => $token,
             ];
         });
@@ -55,7 +55,7 @@ class ContratadoAuthService
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
-            'user' => $user,
+            'user' => $user->toArray(),
             'token' => $token,
         ];
     }
