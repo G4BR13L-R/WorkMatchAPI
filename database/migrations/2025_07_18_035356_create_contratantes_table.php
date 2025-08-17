@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('cnpj', 14)->unique();
             $table->string('razao_social', 255);
             $table->string('nome_fantasia', 255)->nullable();
-            $table->unsignedBigInteger('endereco_id')->nullable();;
+            $table->unsignedBigInteger('endereco_id')->nullable();
             $table->foreign('endereco_id')->references('id')->on('enderecos')->onDelete('cascade');
             $table->timestamps();
         });
