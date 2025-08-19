@@ -3,12 +3,16 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Contratado\ContratadoController;
 use App\Http\Controllers\Contratante\ContratanteController;
+use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
 // Rotas publicas
 Route::post('sessions', [AuthController::class, 'login']);
 Route::post('contratante/perfil', [ContratanteController::class, 'store']);
 Route::post('contratado/perfil', [ContratadoController::class, 'store']);
+
+Route::get('estados', [PublicController::class, 'estados']);
+Route::get('cidades/{estadoId}', [PublicController::class, 'cidades']);
 
 // Rotas protegidas
 Route::middleware(['auth:sanctum'])->group(function () {
