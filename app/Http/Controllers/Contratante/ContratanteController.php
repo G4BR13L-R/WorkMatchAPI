@@ -31,7 +31,7 @@ class ContratanteController extends Controller
             return response()->json($contratante, 201);
         } catch (Exception $e) {
             Log::error('Erro ao cadastrar o perfil do contratante: ' . $e->getMessage(), ['data' => $data]);
-            return response()->json(['error' => 'Não foi possível criar o perfil, tente novamente mais tarde'], 500);
+            return response()->json(['message' => 'Não foi possível criar o perfil, tente novamente mais tarde'], 500);
         }
     }
 
@@ -46,7 +46,7 @@ class ContratanteController extends Controller
                 'data' => $request->all()
             ]);
 
-            return response()->json(['error' => 'Não foi possível atualizar o perfil, tente novamente mais tarde'], 500);
+            return response()->json(['message' => 'Não foi possível atualizar o perfil, tente novamente mais tarde'], 500);
         }
     }
 
@@ -61,7 +61,7 @@ class ContratanteController extends Controller
                 'data' => $request->all()
             ]);
 
-            return response()->json(['error' => 'Não foi possível atualizar a senha, tente novamente mais tarde'], 500);
+            return response()->json(['message' => 'Não foi possível atualizar a senha, tente novamente mais tarde'], 500);
         }
     }
 
@@ -72,7 +72,7 @@ class ContratanteController extends Controller
             return response()->json(['message' => 'Perfil deletado com sucesso!']);
         } catch (Exception $e) {
             Log::error('Erro ao deletar o perfil do contratante: ' . $e->getMessage(), ['user_id' => $request->user()->id]);
-            return response()->json(['error' => 'Não foi possível deletar o perfil, tente novamente mais tarde'], 500);
+            return response()->json(['message' => 'Não foi possível deletar o perfil, tente novamente mais tarde'], 500);
         }
     }
 }
