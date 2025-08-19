@@ -89,7 +89,7 @@ class ContratanteProfileService
 
             $contratante->update($contratanteData);
 
-            return $contratante;
+            return $contratante->toArray();
         });
     }
 
