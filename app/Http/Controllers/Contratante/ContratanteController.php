@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Contratante;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContratanteRegisterRequest;
-use App\Http\Requests\ContratanteUpdatePasswordRequest;
+use App\Http\Requests\PasswordUpdateRequest;
 use App\Http\Requests\ContratanteUpdateRequest;
 use App\Services\Contratante\ContratanteProfileService;
 use Exception;
@@ -50,7 +50,7 @@ class ContratanteController extends Controller
         }
     }
 
-    public function updatePassword(ContratanteUpdatePasswordRequest $request)
+    public function updatePassword(PasswordUpdateRequest $request)
     {
         try {
             $this->contratanteProfileService->updatePassword($request->user(), $request->validated());
