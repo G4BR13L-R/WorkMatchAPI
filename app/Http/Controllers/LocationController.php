@@ -6,7 +6,7 @@ use App\Models\Estado;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class PublicController extends Controller
+class LocationController extends Controller
 {
     public function estados()
     {

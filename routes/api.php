@@ -3,7 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Contratado\ContratadoController;
 use App\Http\Controllers\Contratante\ContratanteController;
-use App\Http\Controllers\PublicController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 
 // Rotas publicas
@@ -11,8 +11,8 @@ Route::post('sessions', [AuthController::class, 'login']);
 Route::post('contratante/perfil', [ContratanteController::class, 'store']);
 Route::post('contratado/perfil', [ContratadoController::class, 'store']);
 
-Route::get('estados', [PublicController::class, 'estados']);
-Route::get('cidades/{estadoId}', [PublicController::class, 'cidades']);
+Route::get('estados', [LocationController::class, 'estados']);
+Route::get('cidades/{estadoId}', [LocationController::class, 'cidades']);
 
 // Rotas protegidas
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -28,6 +28,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('contratado')->middleware('check.type:contratado')->group(function () {
-        // Rotas protegidas para contratados
+
+        Route::get('perfil', [ContratadoController::class, 'show']);
+        Route::put('perfil', [ContratadoController::class, 'update']);
+        Route::put('perfil/senha', [ContratadoController::class, 'updatePassword']);
+        Route::delete('perfil', [ContratadoController::class, 'delete']);
     });
 });
