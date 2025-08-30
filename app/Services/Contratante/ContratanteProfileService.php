@@ -53,7 +53,7 @@ class ContratanteProfileService
         });
     }
 
-    public function updateProfile($user, $data)
+    public function updateProfile($user, array $data)
     {
         if (!$user) {
             abort(404, 'Usuário não encontrado');
@@ -93,7 +93,7 @@ class ContratanteProfileService
         });
     }
 
-    public function updatePassword($user, $data)
+    public function updatePassword($user, array $data)
     {
         if (!$user) {
             abort(404, 'Usuário não encontrado');
