@@ -61,4 +61,11 @@ class Contratado extends Model
     {
         return $this->hasMany(Oferta::class);
     }
+
+    public function toArray()
+    {
+        $data = parent::toArray();
+        $data['endereco'] = $this->endereco ? $this->endereco->toArray() : null;
+        return $data;
+    }
 }
