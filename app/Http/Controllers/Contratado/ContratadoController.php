@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contratado;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContratadoRegisterRequest;
 use App\Http\Requests\ContratadoUpdateRequest;
+use App\Http\Requests\DeleteAccountRequest;
 use App\Http\Requests\PasswordUpdateRequest;
 use App\Services\Contratado\ContratadoProfileService;
 use Exception;
@@ -65,10 +66,10 @@ class ContratadoController extends Controller
         }
     }
 
-    public function delete(Request $request)
+    public function delete(DeleteAccountRequest $request)
     {
         try {
-            $this->contratadoProfileService->deleteProfile($request->user());
+            $this->contratadoProfileService->deleteProfile($request->user(), $request->validated());
             return response()->json(['message' => 'Perfil excluído com sucesso!']);
         } catch (Exception $e) {
             Log::error('Erro ao excluir o perfil do contratado: ' . $e->getMessage(), [

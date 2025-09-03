@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ContratanteRegisterRequest;
 use App\Http\Requests\PasswordUpdateRequest;
 use App\Http\Requests\ContratanteUpdateRequest;
+use App\Http\Requests\DeleteAccountRequest;
 use App\Services\Contratante\ContratanteProfileService;
 use Exception;
 use Illuminate\Http\Request;
@@ -65,10 +66,10 @@ class ContratanteController extends Controller
         }
     }
 
-    public function delete(Request $request)
+    public function delete(DeleteAccountRequest $request)
     {
         try {
-            $this->contratanteProfileService->deleteProfile($request->user());
+            $this->contratanteProfileService->deleteProfile($request->user(), $request->validated());
             return response()->json(['message' => 'Perfil deletado com sucesso!']);
         } catch (Exception $e) {
             Log::error('Erro ao deletar o perfil do contratante: ' . $e->getMessage(), ['user_id' => $request->user()->id]);

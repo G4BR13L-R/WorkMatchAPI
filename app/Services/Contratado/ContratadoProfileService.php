@@ -105,7 +105,7 @@ class ContratadoProfileService
         $user->update(['password' => Hash::make($data['new_password'])]);
     }
 
-    public function deleteProfile($user)
+    public function deleteProfile($user, array $data)
     {
         if (!$user) {
             abort(404, 'Usuário não encontrado');
@@ -113,6 +113,10 @@ class ContratadoProfileService
 
         if (!$user->contratado) {
             abort(404, 'Perfil de contratado não encontrado');
+        }
+
+        if (!Hash::check($data['current_password'], $user->password)) {
+            abort(422, 'Senha atual incorreta');
         }
 
         return DB::transaction(function () use ($user) {
