@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cidade;
 use App\Models\Estado;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -31,6 +32,26 @@ class LocationController extends Controller
             ]);
 
             return response()->json(['message' => 'Nenhuma cidade encontrada'], 404);
+        }
+    }
+
+    public function cidadesByName(string $cidade)
+    {
+        try {
+            $cidades = Cidade::where('descricao', 'ILIKE', "%{$cidade}%")->orderBy('descricao')->get();
+
+            if ($cidades->isEmpty()) {
+                Log::info('Nenhuma cidade encontrada com o nome: ' . $cidade);
+                return response()->json(['message' => 'Nenhuma cidade encontrada'], 404);
+            }
+
+            return response()->json($cidades, 200);
+        } catch (Exception $e) {
+            Log::error('Erro ao buscar cidades pelo nome: ' . $e->getMessage(), [
+                'cidade' => $cidade,
+            ]);
+
+            return response()->json(['message' => 'Erro ao buscar cidades'], 500);
         }
     }
 }

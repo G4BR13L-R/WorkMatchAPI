@@ -12,6 +12,7 @@ Route::post('contratante/perfil', [ContratanteController::class, 'store']);
 Route::post('contratado/perfil', [ContratadoController::class, 'store']);
 
 Route::get('estados', [LocationController::class, 'estados']);
+Route::get('cidades/search/{nome}', [LocationController::class, 'cidadesByName']);
 Route::get('cidades/{estadoId}', [LocationController::class, 'cidades']);
 
 // Rotas protegidas
