@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Candidatura extends Model
 {
-    protected $fillable = ['contratado_id', 'oferta_id', 'status'];
-    protected $hidden = ['created_at', 'updated_at', 'contratado_id', 'oferta_id'];
+    protected $fillable = ['contratado_id', 'oferta_id', 'status_id', 'salario'];
+    protected $hidden = ['created_at', 'updated_at', 'contratado_id', 'oferta_id', 'status_id'];
 
     public function contratado(): BelongsTo
     {
@@ -18,5 +18,17 @@ class Candidatura extends Model
     public function oferta(): BelongsTo
     {
         return $this->belongsTo(Oferta::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+        $array['status'] = $this->status ? $this->status->toArray() : null;
+        return $array;
     }
 }

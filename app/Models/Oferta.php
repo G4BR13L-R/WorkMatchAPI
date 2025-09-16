@@ -14,7 +14,6 @@ class Oferta extends Model
         'salario',
         'data_inicio',
         'data_fim',
-        'status_id',
         'endereco_id',
         'contratante_id',
         'contratado_id'
@@ -23,16 +22,10 @@ class Oferta extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
-        'status_id',
         'endereco_id',
         'contratante_id',
         'contratado_id'
     ];
-
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(Status::class);
-    }
 
     public function endereco(): BelongsTo
     {

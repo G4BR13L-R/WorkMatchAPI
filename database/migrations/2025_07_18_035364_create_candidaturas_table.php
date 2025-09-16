@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('candidaturas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contratado_id');
-            $table->foreign('contratado_id')->references('id')->on('contratados')->onDelete('cascade');
             $table->unsignedBigInteger('oferta_id');
+            $table->unsignedBigInteger('status_id');
+            $table->decimal('salario', 10, 2)->nullable();
+            $table->foreign('contratado_id')->references('id')->on('contratados')->onDelete('cascade');
             $table->foreign('oferta_id')->references('id')->on('ofertas')->onDelete('cascade');
-            $table->enum('status', ['pendente', 'aceita', 'recusada'])->default('pendente');
+            $table->foreign('status_id')->references('id')->on('status')->onDelete('cascade');
             $table->timestamps();
         });
     }
