@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Contratado\ContratadoController;
 use App\Http\Controllers\Contratante\ContratanteController;
+use App\Http\Controllers\Contratante\OfertaController as ContratanteOfertaController;
+use App\Http\Controllers\Contratado\OfertaController as ContratadoOfertaController;
 use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('perfil', [ContratanteController::class, 'update']);
         Route::put('perfil/senha', [ContratanteController::class, 'updatePassword']);
         Route::delete('perfil', [ContratanteController::class, 'delete']);
+
+        Route::get('ofertas', [ContratanteOfertaController::class, 'index']);
+        Route::get('ofertas/{id}', [ContratanteOfertaController::class, 'show']);
+        Route::post('ofertas', [ContratanteOfertaController::class, 'store']);
+        Route::put('ofertas/{id}', [ContratanteOfertaController::class, 'update']);
+        Route::delete('ofertas/{id}', [ContratanteOfertaController::class, 'destroy']);
     });
 
     Route::prefix('contratado')->middleware('check.type:contratado')->group(function () {
@@ -34,5 +42,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('perfil', [ContratadoController::class, 'update']);
         Route::put('perfil/senha', [ContratadoController::class, 'updatePassword']);
         Route::delete('perfil', [ContratadoController::class, 'delete']);
+
+        Route::get('ofertas', [ContratadoOfertaController::class, 'index']);
+        Route::get('ofertas/search/{cidadeId}', [ContratadoOfertaController::class, 'index']);
+        Route::get('ofertas/{id}', [ContratadoOfertaController::class, 'show']);
     });
 });
