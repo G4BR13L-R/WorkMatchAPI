@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OfertaRequest;
 use App\Services\OfertaService;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Request;
 
 class OfertaController extends Controller
 {
