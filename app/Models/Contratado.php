@@ -57,11 +57,6 @@ class Contratado extends Model
         return $this->hasMany(Candidatura::class);
     }
 
-    public function ofertas(): HasMany
-    {
-        return $this->hasMany(Oferta::class);
-    }
-
     public function toArray()
     {
         $data = parent::toArray();

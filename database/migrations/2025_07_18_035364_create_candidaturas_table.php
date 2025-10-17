@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('contratado_id');
             $table->unsignedBigInteger('oferta_id');
+            $table->unique(['contratado_id', 'oferta_id']);
             $table->unsignedBigInteger('status_id');
             $table->decimal('salario', 10, 2)->nullable();
             $table->foreign('contratado_id')->references('id')->on('contratados')->onDelete('cascade');

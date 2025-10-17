@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Status extends Model
 {
+    protected $table = 'status';
     protected $fillable = ['descricao'];
     protected $hidden = ['created_at', 'updated_at'];
 

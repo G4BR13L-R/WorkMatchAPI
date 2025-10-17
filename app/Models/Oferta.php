@@ -14,9 +14,9 @@ class Oferta extends Model
         'salario',
         'data_inicio',
         'data_fim',
+        'finalizado',
         'endereco_id',
         'contratante_id',
-        'contratado_id'
     ];
 
     protected $hidden = [
@@ -24,7 +24,6 @@ class Oferta extends Model
         'updated_at',
         'endereco_id',
         'contratante_id',
-        'contratado_id'
     ];
 
     public function endereco(): BelongsTo
@@ -35,11 +34,6 @@ class Oferta extends Model
     public function contratante(): BelongsTo
     {
         return $this->belongsTo(Contratante::class);
-    }
-
-    public function contratado(): BelongsTo
-    {
-        return $this->belongsTo(Contratado::class);
     }
 
     public function candidaturas(): HasMany
@@ -59,7 +53,7 @@ class Oferta extends Model
         $data = array_merge($data, [
             'endereco' => $this->endereco ? $this->endereco->toArray() : null,
             'contratante' => $this->contratante ? $this->contratante->toArray() : null,
-            'contratado' => $this->contratado ? $this->contratado->toArray() : null,
+            'candidaturas' => $this->candidaturas ? $this->candidaturas->toArray() : null,
         ]);
 
         return $data;

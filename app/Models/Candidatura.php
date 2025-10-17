@@ -28,7 +28,12 @@ class Candidatura extends Model
     public function toArray()
     {
         $array = parent::toArray();
-        $array['status'] = $this->status ? $this->status->toArray() : null;
+
+        $array = array_merge($array, [
+            'contratado' => $this->contratado ? $this->contratado->toArray() : null,
+            'status' => $this->status ? $this->status->toArray() : null,
+        ]);
+
         return $array;
     }
 }
