@@ -14,7 +14,7 @@ class Oferta extends Model
         'salario',
         'data_inicio',
         'data_fim',
-        'finalizado',
+        'finalizada',
         'endereco_id',
         'contratante_id',
     ];
