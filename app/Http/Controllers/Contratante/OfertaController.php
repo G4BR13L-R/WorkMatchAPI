@@ -71,4 +71,15 @@ class OfertaController extends Controller
             return response()->json(['message' => 'Não foi possível deletar a oferta, tente novamente mais tarde'], 500);
         }
     }
+
+    public function finalizarOferta(Request $request, int $id)
+    {
+        try {
+            $oferta = $this->ofertaService->finalizarOferta($request->user(), $id);
+            return response()->json($oferta, 200);
+        } catch (Exception $e) {
+            Log::error('Erro ao alterar o status da oferta: ' . $e->getMessage(), ['id' => $id]);
+            return response()->json(['message' => 'Não foi possível alterar o status da oferta, tente novamente mais tarde'], 500);
+        }
+    }
 }

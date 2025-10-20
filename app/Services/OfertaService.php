@@ -147,4 +147,28 @@ class OfertaService
             Endereco::where('id', $enderecoId)->delete();
         });
     }
+
+    public function finalizarOferta($user, int $id)
+    {
+        if (!$user) {
+            abort(404, 'Usuário não encontrado');
+        }
+
+        if (!$user->contratante) {
+            abort(404, 'Perfil de contratante não encontrado');
+        }
+
+        $contratante = $user->contratante;
+
+        $oferta = Oferta::where(['id' => $id, 'contratante_id' => $contratante->id])->first();
+
+        if (!$oferta) {
+            abort(404, 'Oferta nao encontrada');
+        }
+
+        $oferta->finalizada = true;
+        $oferta->save();
+
+        return $oferta->toArray();
+    }
 }
