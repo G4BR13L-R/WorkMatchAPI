@@ -17,6 +17,9 @@ class Contratado extends Model
         'data_nascimento',
         'cpf',
         'rg',
+        'formacoes',
+        'habilidades',
+        'experiencias',
         'endereco_id'
     ];
 
@@ -35,21 +38,6 @@ class Contratado extends Model
     public function endereco(): BelongsTo
     {
         return $this->belongsTo(Endereco::class);
-    }
-
-    public function habilidades(): HasMany
-    {
-        return $this->hasMany(Habilidade::class);
-    }
-
-    public function experiencias(): HasMany
-    {
-        return $this->hasMany(ExperienciaProfissional::class);
-    }
-
-    public function funcoes(): BelongsToMany
-    {
-        return $this->belongsToMany(Funcao::class, 'contratado_funcoes');
     }
 
     public function candidaturas(): HasMany

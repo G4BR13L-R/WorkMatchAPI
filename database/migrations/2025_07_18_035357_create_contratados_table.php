@@ -21,6 +21,9 @@ return new class extends Migration
             $table->date('data_nascimento');
             $table->string('cpf', 11)->unique();
             $table->string('rg', 20)->nullable();
+            $table->text('formacoes')->nullable();
+            $table->text('habilidades')->nullable();
+            $table->text('experiencias')->nullable();
             $table->unsignedBigInteger('endereco_id')->nullable();
             $table->foreign('endereco_id')->references('id')->on('enderecos')->onDelete('cascade');
             $table->timestamps();
