@@ -33,7 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('ofertas/{id}', [ContratanteOfertaController::class, 'show']);
         Route::post('ofertas', [ContratanteOfertaController::class, 'store']);
         Route::put('ofertas/{id}', [ContratanteOfertaController::class, 'update']);
-        Route::put('ofertas/finalizar/{id}', [ContratanteOfertaController::class, 'finalizarOferta']);
+        Route::put('ofertas/{id}/finalizar', [ContratanteOfertaController::class, 'finalizarOferta']);
         Route::delete('ofertas/{id}', [ContratanteOfertaController::class, 'destroy']);
     });
 
