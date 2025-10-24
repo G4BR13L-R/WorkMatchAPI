@@ -82,4 +82,15 @@ class OfertaController extends Controller
             return response()->json(['message' => 'Não foi possível alterar o status da oferta, tente novamente mais tarde'], 500);
         }
     }
+
+    public function candidatosOferta(int $id)
+    {
+        try {
+            $candidatos = $this->ofertaService->getCandidatosByOfertaId($id);
+            return response()->json($candidatos, 200);
+        } catch (Exception $e) {
+            Log::error('Erro ao buscar os candidatos da oferta: ' . $e->getMessage(), ['id' => $id]);
+            return response()->json(['message' => 'Não foi possível buscar os candidatos da oferta, tente novamente mais tarde'], 500);
+        }
+    }
 }

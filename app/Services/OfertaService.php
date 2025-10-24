@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Candidatura;
 use App\Models\Endereco;
 use App\Models\Oferta;
 use Illuminate\Support\Arr;
@@ -172,5 +173,26 @@ class OfertaService
         $oferta->save();
 
         return $oferta->toArray();
+    }
+
+    public function getCandidatosByOfertaId(int $id)
+    {
+        $oferta = Oferta::find($id);
+
+        if (!$oferta) {
+            abort(404, 'Oferta não encontrada');
+        }
+
+        $candidaturas = Candidatura::with([
+            'contratado.endereco.cidade.estado',
+            'status',
+            'oferta.endereco.cidade.estado',
+            'oferta.contratante',
+        ])->where([
+            ['oferta_id', '=', $id],
+            ['status_id', '!=', 3],
+        ])->get();
+
+        return $candidaturas->toArray();
     }
 }

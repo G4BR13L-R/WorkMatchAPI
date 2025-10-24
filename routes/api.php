@@ -5,6 +5,7 @@ use App\Http\Controllers\Contratado\ContratadoController;
 use App\Http\Controllers\Contratante\ContratanteController;
 use App\Http\Controllers\Contratante\OfertaController as ContratanteOfertaController;
 use App\Http\Controllers\Contratado\OfertaController as ContratadoOfertaController;
+use App\Http\Controllers\Contratante\CandidaturaController as ContratanteCandidaturaController;
 use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('ofertas/{id}', [ContratanteOfertaController::class, 'update']);
         Route::put('ofertas/{id}/finalizar', [ContratanteOfertaController::class, 'finalizarOferta']);
         Route::delete('ofertas/{id}', [ContratanteOfertaController::class, 'destroy']);
+
+        Route::get('ofertas/{id}/candidaturas', [ContratanteOfertaController::class, 'candidatosOferta']);
+        Route::get('candidaturas/{id}', [ContratanteCandidaturaController::class, 'show']);
+        Route::put('candidaturas/{id}', [ContratanteCandidaturaController::class, 'changeStatus']);
     });
 
     Route::prefix('contratado')->middleware('check.type:contratado')->group(function () {
