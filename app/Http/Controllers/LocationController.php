@@ -13,39 +13,53 @@ class LocationController extends Controller
     {
         $estados = Estado::orderBy('descricao')->get();
 
-        if (empty($estados)) {
+        if ($estados->isEmpty()) {
             Log::info('Nenhum estado encontrado');
             return response()->json(['message' => 'Nenhum estado encontrado'], 404);
         }
 
-        return response()->json($estados, 200);
+        return response()->json($estados);
     }
 
     public function cidades(int $estadoId)
     {
         try {
-            $cidades = Estado::findOrFail($estadoId)->cidades()->orderBy('descricao')->get();
-            return response()->json($cidades, 200);
+            $estado = Estado::findOrFail($estadoId);
+
+            $cidades = $estado->cidades()
+                ->with('estado')
+                ->orderBy('descricao')
+                ->get();
+
+            if ($cidades->isEmpty()) {
+                Log::info('Nenhuma cidade encontrada para o estado', ['estado_id' => $estadoId]);
+                return response()->json(['message' => 'Nenhuma cidade encontrada'], 404);
+            }
+
+            return response()->json($cidades);
         } catch (Exception $e) {
-            Log::error('Erro ao atualizar o perfil do contratante: ' . $e->getMessage(), [
+            Log::error('Erro ao buscar cidades do estado: ' . $e->getMessage(), [
                 'estado_id' => $estadoId,
             ]);
 
-            return response()->json(['message' => 'Nenhuma cidade encontrada'], 404);
+            return response()->json(['message' => 'Erro ao buscar cidades'], 500);
         }
     }
 
     public function cidadesByName(string $cidade)
     {
         try {
-            $cidades = Cidade::where('descricao', 'ILIKE', "%{$cidade}%")->orderBy('descricao')->get();
+            $cidades = Cidade::with('estado')
+                ->where('descricao', 'ILIKE', "%{$cidade}%")
+                ->orderBy('descricao')
+                ->get();
 
             if ($cidades->isEmpty()) {
-                Log::info('Nenhuma cidade encontrada com o nome: ' . $cidade);
+                Log::info('Nenhuma cidade encontrada com o nome informado', ['cidade' => $cidade]);
                 return response()->json(['message' => 'Nenhuma cidade encontrada'], 404);
             }
 
-            return response()->json($cidades, 200);
+            return response()->json($cidades);
         } catch (Exception $e) {
             Log::error('Erro ao buscar cidades pelo nome: ' . $e->getMessage(), [
                 'cidade' => $cidade,

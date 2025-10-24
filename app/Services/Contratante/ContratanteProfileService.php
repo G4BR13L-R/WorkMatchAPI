@@ -21,6 +21,8 @@ class ContratanteProfileService
             abort(404, 'Perfil de contratante não encontrado');
         }
 
+        $user->contratante->load('endereco.cidade.estado');
+
         return $user->contratante->toArray();
     }
 
@@ -45,6 +47,7 @@ class ContratanteProfileService
             ]);
 
             $token = $user->createToken('auth_token')->plainTextToken;
+            $contratante->load('endereco.cidade.estado');
 
             return [
                 'contratante' => $contratante->toArray(),
@@ -88,6 +91,7 @@ class ContratanteProfileService
             }
 
             $contratante->update($contratanteData);
+            $contratante->load('endereco.cidade.estado');
 
             return $contratante->toArray();
         });

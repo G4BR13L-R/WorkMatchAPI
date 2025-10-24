@@ -21,6 +21,8 @@ class ContratadoProfileService
             abort(404, 'Perfil de contratado não encontrado');
         }
 
+        $user->contratado->load('endereco.cidade.estado');
+
         return $user->contratado->toArray();
     }
 
@@ -45,6 +47,7 @@ class ContratadoProfileService
             ]);
 
             $token = $user->createToken('auth_token')->plainTextToken;
+            $contratado->load('endereco.cidade.estado');
 
             return [
                 'contratado' => $contratado->toArray(),
@@ -87,6 +90,7 @@ class ContratadoProfileService
             }
 
             $contratado->update($contratadoData);
+            $contratado->load('endereco.cidade.estado');
 
             return $contratado->toArray();
         });

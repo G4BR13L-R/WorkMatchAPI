@@ -82,6 +82,8 @@ class OfertaService
             $oferta['endereco_id'] = $endereco->id;
             $oferta = Oferta::create($oferta);
 
+            $oferta->load(['endereco', 'contratante', 'candidaturas']);
+
             return $oferta->toArray();
         });
     }
