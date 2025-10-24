@@ -45,17 +45,4 @@ class Oferta extends Model
     {
         return $this->hasMany(Avaliacao::class);
     }
-
-    public function toArray()
-    {
-        $data = parent::toArray();
-
-        $data = array_merge($data, [
-            'endereco' => $this->endereco ? $this->endereco->toArray() : null,
-            'contratante' => $this->contratante ? $this->contratante->toArray() : null,
-            'candidaturas' => $this->candidaturas ? $this->candidaturas->toArray() : null,
-        ]);
-
-        return $data;
-    }
 }

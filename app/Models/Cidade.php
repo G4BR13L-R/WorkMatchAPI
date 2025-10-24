@@ -20,11 +20,4 @@ class Cidade extends Model
     {
         return $this->hasMany(Endereco::class);
     }
-
-    public function toArray()
-    {
-        $data = parent::toArray();
-        $data['estado'] = $this->estado ? $this->estado->toArray() : null;
-        return $data;
-    }
 }
