@@ -15,8 +15,10 @@ class OfertaController extends Controller
 
     public function index(Request $request)
     {
+        $finalizada = filter_var($request->query('finalizada'), FILTER_VALIDATE_BOOLEAN);
+
         try {
-            $ofertas = $this->ofertaService->listOfertasByUser($request->user());
+            $ofertas = $this->ofertaService->listOfertasByUser($request->user(), $finalizada);
             return response()->json($ofertas, 200);
         } catch (Exception $e) {
             Log::error('Erro ao listar as ofertas: ' . $e->getMessage());

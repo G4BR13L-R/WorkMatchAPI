@@ -23,7 +23,7 @@ class OfertaService
         return $query->get()->toArray();
     }
 
-    public function listOfertasByUser($user)
+    public function listOfertasByUser($user, ?bool $finalizada)
     {
         if (!$user) {
             abort(404, 'Usuário não encontrado');
@@ -36,10 +36,13 @@ class OfertaService
         $contratante = $user->contratante;
 
         $ofertas = Oferta::where('contratante_id', $contratante->id)
-            ->with('endereco.cidade.estado')
-            ->get();
+            ->with('endereco.cidade.estado');
 
-        return $ofertas->toArray();
+        if ($finalizada !== null) {
+            $ofertas->where('finalizada', $finalizada);
+        }
+
+        return $ofertas->get()->toArray();
     }
 
     public function getOfertaById(int $id)
@@ -188,11 +191,12 @@ class OfertaService
             'status',
             'oferta.endereco.cidade.estado',
             'oferta.contratante',
-        ])->where([
-            ['oferta_id', '=', $id],
-            ['status_id', '!=', 3],
-        ])->get();
+        ])->where('oferta_id', $id);
 
-        return $candidaturas->toArray();
+        if ($oferta->finalizada) {
+            $candidaturas->where('status_id', 2);
+        }
+
+        return $candidaturas->get()->toArray();
     }
 }
