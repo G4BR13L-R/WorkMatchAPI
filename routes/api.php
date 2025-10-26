@@ -53,4 +53,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('ofertas/search/{cidadeId}', [ContratadoOfertaController::class, 'index']);
         Route::get('ofertas/{id}', [ContratadoOfertaController::class, 'show']);
     });
+
+    Route::get('avaliacao', [ContratadoController::class, 'show']);
+    Route::post('avaliacao', [ContratadoController::class, 'store']);
+    Route::put('avaliacao', [ContratadoController::class, 'update']);
+    Route::delete('avaliacao', [ContratadoController::class, 'destroy']);
 });
