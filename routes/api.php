@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('perfil', [ContratanteController::class, 'show']);
         Route::put('perfil', [ContratanteController::class, 'update']);
         Route::put('perfil/senha', [ContratanteController::class, 'updatePassword']);
-        Route::delete('perfil', [ContratanteController::class, 'delete']);
+        Route::delete('perfil', [ContratanteController::class, 'destroy']);
 
         Route::get('ofertas', [ContratanteOfertaController::class, 'index']);
         Route::get('ofertas/{id}', [ContratanteOfertaController::class, 'show']);
@@ -47,7 +47,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('perfil', [ContratadoController::class, 'show']);
         Route::put('perfil', [ContratadoController::class, 'update']);
         Route::put('perfil/senha', [ContratadoController::class, 'updatePassword']);
-        Route::delete('perfil', [ContratadoController::class, 'delete']);
+        Route::delete('perfil', [ContratadoController::class, 'destroy']);
 
         Route::get('ofertas', [ContratadoOfertaController::class, 'index']);
         Route::get('ofertas/search/{cidadeId}', [ContratadoOfertaController::class, 'index']);

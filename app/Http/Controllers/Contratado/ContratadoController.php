@@ -66,7 +66,7 @@ class ContratadoController extends Controller
         }
     }
 
-    public function delete(DeleteAccountRequest $request)
+    public function destroy(DeleteAccountRequest $request)
     {
         try {
             $this->contratadoProfileService->deleteProfile($request->user(), $request->validated());
