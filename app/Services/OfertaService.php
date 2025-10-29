@@ -12,7 +12,7 @@ class OfertaService
 {
     public function listOfertas(?int $cidadeId = null)
     {
-        $query = Oferta::with('endereco.cidade.estado');
+        $query = Oferta::with(['endereco.cidade.estado', 'contratante']);
 
         if (!empty($cidadeId)) {
             $query->whereHas('endereco', function ($query) use ($cidadeId) {
@@ -36,7 +36,7 @@ class OfertaService
         $contratante = $user->contratante;
 
         $ofertas = Oferta::where('contratante_id', $contratante->id)
-            ->with('endereco.cidade.estado');
+            ->with(['endereco.cidade.estado', 'contratante']);
 
         if ($finalizada !== null) {
             $ofertas->where('finalizada', $finalizada);
@@ -48,7 +48,7 @@ class OfertaService
     public function getOfertaById(int $id)
     {
         $oferta = Oferta::where('id', $id)
-            ->with('endereco.cidade.estado')
+            ->with(['endereco.cidade.estado', 'contratante'])
             ->first();
 
         if (!$oferta) {
@@ -86,7 +86,7 @@ class OfertaService
             $oferta['endereco_id'] = $endereco->id;
             $oferta = Oferta::create($oferta);
 
-            $oferta->load(['endereco', 'contratante', 'candidaturas']);
+            $oferta->load(['endereco.cidade.estado', 'contratante', 'candidaturas']);
 
             return $oferta->toArray();
         });

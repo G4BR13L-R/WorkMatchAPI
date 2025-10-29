@@ -14,7 +14,10 @@ class AvaliacaoService
             ['destinatario_id', $dados['destinatario_id']],
             ['destinatario_tipo', $dados['destinatario_tipo']],
             ['oferta_id', $dados['oferta_id']],
-        ])->with('oferta.endereco.cidade.estado')->first();
+        ])->with([
+            'oferta.endereco.cidade.estado',
+            'oferta.contratante'
+        ])->first();
 
         return $avaliacao ? $avaliacao->toArray() : null;
     }
@@ -23,7 +26,7 @@ class AvaliacaoService
     {
         $avaliacao = Avaliacao::create($dados);
 
-        $avaliacao->load('oferta.endereco.cidade.estado');
+        $avaliacao->load(['oferta.endereco.cidade.estado', 'oferta.contratante']);
 
         return $avaliacao->toArray();
     }
@@ -38,7 +41,7 @@ class AvaliacaoService
 
         $avaliacao->update($dados);
 
-        $avaliacao->load('oferta.endereco.cidade.estado');
+        $avaliacao->load(['oferta.endereco.cidade.estado', 'oferta.contratante']);
 
         return $avaliacao->toArray();
     }

@@ -10,7 +10,8 @@ class CandidaturaService
     {
         $candidatura = Candidatura::with([
             'contratado.endereco.cidade.estado',
-            'oferta',
+            'oferta.endereco.cidade.estado',
+            'oferta.contratante',
             'status'
         ])->find($id);
 
@@ -23,11 +24,7 @@ class CandidaturaService
 
     public function changeStatus(int $id, int $statusId)
     {
-        $candidatura = Candidatura::with([
-            'contratado.endereco.cidade.estado',
-            'oferta',
-            'status'
-        ])->find($id);
+        $candidatura = Candidatura::find($id);
 
         if (!$candidatura) {
             abort(404, 'Candidatura nao encontrada');
