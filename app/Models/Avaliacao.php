@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Avaliacao extends Model
 {
+    protected $table = 'avaliacoes';
+
     protected $fillable = [
         'autor_id',
         'autor_tipo',
@@ -20,9 +22,6 @@ class Avaliacao extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
-        'autor_id',
-        'destinatario_id',
-        'oferta_id'
     ];
 
     public function oferta(): BelongsTo

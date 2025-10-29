@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvaliacaoController;
 use App\Http\Controllers\Contratado\ContratadoController;
 use App\Http\Controllers\Contratante\ContratanteController;
 use App\Http\Controllers\Contratante\OfertaController as ContratanteOfertaController;
@@ -54,8 +55,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('ofertas/{id}', [ContratadoOfertaController::class, 'show']);
     });
 
-    Route::get('avaliacao', [ContratadoController::class, 'show']);
-    Route::post('avaliacao', [ContratadoController::class, 'store']);
-    Route::put('avaliacao', [ContratadoController::class, 'update']);
-    Route::delete('avaliacao', [ContratadoController::class, 'destroy']);
+    Route::get('avaliacao', [AvaliacaoController::class, 'show']);
+    Route::post('avaliacao', [AvaliacaoController::class, 'store']);
+    Route::put('avaliacao/{id}', [AvaliacaoController::class, 'update']);
+    Route::delete('avaliacao', [AvaliacaoController::class, 'destroy']);
 });
