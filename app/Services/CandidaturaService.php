@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Avaliacao;
 use App\Models\Candidatura;
 
 class CandidaturaService
@@ -19,7 +20,16 @@ class CandidaturaService
             abort(404, 'Candidatura nao encontrada');
         }
 
-        return $candidatura->toArray();
+        $candidatura = array_merge($candidatura->toArray(), [
+            'avaliacoes' => Avaliacao::where([
+                'destinatario_id' => $candidatura->contratado_id,
+                'destinatario_tipo' => 'contratado',
+            ])->with(
+                ['oferta.endereco.cidade.estado', 'oferta.contratante']
+            )->orderBy('created_at', 'desc')->get()->toArray()
+        ]);
+
+        return $candidatura;
     }
 
     public function changeStatus(int $id, int $statusId)

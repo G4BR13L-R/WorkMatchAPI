@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Avaliacao;
 use App\Models\Candidatura;
 use App\Models\Endereco;
 use App\Models\Oferta;
@@ -55,7 +56,16 @@ class OfertaService
             abort(404, 'Oferta nao encontrada');
         }
 
-        return $oferta->toArray();
+        $oferta = array_merge($oferta->toArray(), [
+            'avaliacoes' => Avaliacao::where([
+                'destinatario_id' => $oferta->contratante_id,
+                'destinatario_tipo' => 'contratante',
+            ])->with(
+                ['oferta.endereco.cidade.estado', 'oferta.contratante']
+            )->orderBy('created_at', 'desc')->get()->toArray()
+        ]);
+
+        return $oferta;
     }
 
     public function registerOferta($user, array $data)
