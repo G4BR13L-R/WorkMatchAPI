@@ -7,18 +7,18 @@ use App\Http\Requests\ContratanteRegisterRequest;
 use App\Http\Requests\PasswordUpdateRequest;
 use App\Http\Requests\ContratanteUpdateRequest;
 use App\Http\Requests\DeleteAccountRequest;
-use App\Services\Contratante\ContratanteProfileService;
+use App\Services\Contratante\ProfileService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ContratanteController extends Controller
 {
-    public function __construct(private ContratanteProfileService $contratanteProfileService) {}
+    public function __construct(private ProfileService $profileService) {}
 
     public function show(Request $request)
     {
-        $contratante = $this->contratanteProfileService->getProfile($request->user());
+        $contratante = $this->profileService->getProfile($request->user());
 
         return response()->json($contratante);
     }
@@ -28,7 +28,7 @@ class ContratanteController extends Controller
         $data = $request->validated();
 
         try {
-            $contratante = $this->contratanteProfileService->registerProfile($data);
+            $contratante = $this->profileService->registerProfile($data);
             return response()->json($contratante, 201);
         } catch (Exception $e) {
             Log::error('Erro ao cadastrar o perfil do contratante: ' . $e->getMessage(), ['data' => $data]);
@@ -39,7 +39,7 @@ class ContratanteController extends Controller
     public function update(ContratanteUpdateRequest $request)
     {
         try {
-            $this->contratanteProfileService->updateProfile($request->user(), $request->validated());
+            $this->profileService->updateProfile($request->user(), $request->validated());
             return response()->json(['message' => 'Perfil atualizado com sucesso!']);
         } catch (Exception $e) {
             Log::error('Erro ao atualizar o perfil do contratante: ' . $e->getMessage(), [
@@ -54,7 +54,7 @@ class ContratanteController extends Controller
     public function updatePassword(PasswordUpdateRequest $request)
     {
         try {
-            $this->contratanteProfileService->updatePassword($request->user(), $request->validated());
+            $this->profileService->updatePassword($request->user(), $request->validated());
             return response()->json(['message' => 'Senha atualizada com sucesso!']);
         } catch (Exception $e) {
             Log::error('Erro ao atualizar senha do contratante: ' . $e->getMessage(), [
@@ -69,7 +69,7 @@ class ContratanteController extends Controller
     public function destroy(DeleteAccountRequest $request)
     {
         try {
-            $this->contratanteProfileService->deleteProfile($request->user(), $request->validated());
+            $this->profileService->deleteProfile($request->user(), $request->validated());
             return response()->json(['message' => 'Perfil deletado com sucesso!']);
         } catch (Exception $e) {
             Log::error('Erro ao deletar o perfil do contratante: ' . $e->getMessage(), ['user_id' => $request->user()->id]);

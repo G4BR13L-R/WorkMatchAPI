@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\Contratado;
+namespace App\Services\Contratante;
 
-use App\Models\Contratado;
+use App\Models\Contratante;
 use App\Models\Endereco;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class ContratadoProfileService
+class ProfileService
 {
     public function getProfile($user)
     {
@@ -17,13 +17,13 @@ class ContratadoProfileService
             abort(404, 'Usuário não encontrado');
         }
 
-        if (!$user->contratado) {
-            abort(404, 'Perfil de contratado não encontrado');
+        if (!$user->contratante) {
+            abort(404, 'Perfil de contratante não encontrado');
         }
 
-        $user->contratado->load('endereco.cidade.estado');
+        $user->contratante->load('endereco.cidade.estado');
 
-        return $user->contratado->toArray();
+        return $user->contratante->toArray();
     }
 
     public function registerProfile(array $data)
@@ -32,25 +32,25 @@ class ContratadoProfileService
             $user = User::create([
                 'nome' => $data['nome'],
                 'email' => $data['email'],
-                'tipo' => 'contratado',
+                'tipo' => 'contratante',
                 'password' => Hash::make($data['password']),
             ]);
 
-            $contratado = Contratado::create([
+            $contratante = Contratante::create([
                 'user_id' => $user->id,
                 'nome' => $data['nome'],
                 'telefone' => $data['telefone'],
                 'email' => $data['email'],
-                'data_nascimento' => $data['data_nascimento'],
-                'cpf' => $data['cpf'],
-                'rg' => $data['rg'],
+                'cnpj' => $data['cnpj'],
+                'razao_social' => $data['razao_social'],
+                'nome_fantasia' => $data['nome_fantasia'],
             ]);
 
             $token = $user->createToken('auth_token')->plainTextToken;
-            $contratado->load('endereco.cidade.estado');
+            $contratante->load('endereco.cidade.estado');
 
             return [
-                'contratado' => $contratado->toArray(),
+                'contratante' => $contratante->toArray(),
                 'token' => $token,
             ];
         });
@@ -62,12 +62,13 @@ class ContratadoProfileService
             abort(404, 'Usuário não encontrado');
         }
 
-        if (!$user->contratado) {
-            abort(404, 'Perfil de contratado não encontrado');
+        if (!$user->contratante) {
+            abort(404, 'Perfil de contratante não encontrado');
         }
 
-        $contratado = $user->contratado;
+        $contratante = $user->contratante;
 
+        // Extrai dados do endereço
         $enderecoData = Arr::only($data, [
             'logradouro',
             'numero',
@@ -76,23 +77,23 @@ class ContratadoProfileService
             'cidade_id'
         ]);
 
-        $contratadoData = Arr::except($data, array_keys($enderecoData));
+        // Remove os campos de endereço dos dados principais
+        $contratanteData = Arr::except($data, array_keys($enderecoData));
 
-        return DB::transaction(function () use ($contratado, $contratadoData, $enderecoData) {
-            $contratado->update($contratadoData);
-
-            if ($contratado->endereco_id) {
-                $endereco = Endereco::findOrFail($contratado->endereco_id);
+        return DB::transaction(function () use ($contratante, $contratanteData, $enderecoData) {
+            // Cria ou atualiza endereço
+            if ($contratante->endereco_id) {
+                $endereco = Endereco::findOrFail($contratante->endereco_id);
                 $endereco->update($enderecoData);
             } else {
                 $endereco = Endereco::create($enderecoData);
-                $contratadoData['endereco_id'] = $endereco->id;
+                $contratanteData['endereco_id'] = $endereco->id;
             }
 
-            $contratado->update($contratadoData);
-            $contratado->load('endereco.cidade.estado');
+            $contratante->update($contratanteData);
+            $contratante->load('endereco.cidade.estado');
 
-            return $contratado->toArray();
+            return $contratante->toArray();
         });
     }
 
@@ -115,16 +116,16 @@ class ContratadoProfileService
             abort(404, 'Usuário não encontrado');
         }
 
-        if (!$user->contratado) {
-            abort(404, 'Perfil de contratado não encontrado');
+        if (!$user->contratante) {
+            abort(404, 'Perfil de contratante não encontrado');
         }
 
         if (!Hash::check($data['current_password'], $user->password)) {
             abort(422, 'Senha atual incorreta');
         }
 
-        return DB::transaction(function () use ($user) {
-            $user->contratado->delete();
+        DB::transaction(function () use ($user) {
+            $user->contratante->delete();
             $user->delete();
         });
     }
