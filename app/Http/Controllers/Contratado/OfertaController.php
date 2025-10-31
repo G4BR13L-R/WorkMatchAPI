@@ -7,6 +7,7 @@ use App\Services\Contratado\OfertaService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class OfertaController extends Controller
 {
@@ -20,6 +21,8 @@ class OfertaController extends Controller
         try {
             $ofertas = $this->ofertaService->listOfertas($request->user(), $finalizada, $cidadeId);
             return response()->json($ofertas, 200);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao listar as ofertas: ' . $e->getMessage());
             return response()->json(['message' => 'Não foi possível listar as ofertas, tente novamente mais tarde'], 500);
@@ -31,6 +34,8 @@ class OfertaController extends Controller
         try {
             $oferta = $this->ofertaService->getOfertaById($request->user(), $id);
             return response()->json($oferta, 200);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao buscar a oferta: ' . $e->getMessage(), ['id' => $id]);
             return response()->json(['message' => 'Não foi possível buscar a oferta, tente novamente mais tarde'], 500);
@@ -53,6 +58,8 @@ class OfertaController extends Controller
         try {
             $candidatura = $this->ofertaService->registerCandidatura($request->user(), $request->validate($rules, $messages));
             return response()->json($candidatura, 201);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao criar a candidatura: ' . $e->getMessage());
             return response()->json(['message' => 'Não foi possível criar a candidatura, tente novamente mais tarde'], 500);
@@ -64,6 +71,8 @@ class OfertaController extends Controller
         try {
             $this->ofertaService->deleteCandidatura($request->user(), $id);
             return response()->json(['message' => 'Candidatura excluído com sucesso!']);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao deletar a candidatura: ' . $e->getMessage(), ['id' => $id]);
             return response()->json(['message' => 'Não foi possível deletar a candidatura, tente novamente mais tarde'], 500);

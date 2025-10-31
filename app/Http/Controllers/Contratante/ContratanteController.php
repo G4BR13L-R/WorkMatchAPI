@@ -11,6 +11,7 @@ use App\Services\Contratante\ProfileService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ContratanteController extends Controller
 {
@@ -30,6 +31,8 @@ class ContratanteController extends Controller
         try {
             $contratante = $this->profileService->registerProfile($data);
             return response()->json($contratante, 201);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao cadastrar o perfil do contratante: ' . $e->getMessage(), ['data' => $data]);
             return response()->json(['message' => 'Não foi possível criar o perfil, tente novamente mais tarde'], 500);
@@ -41,6 +44,8 @@ class ContratanteController extends Controller
         try {
             $this->profileService->updateProfile($request->user(), $request->validated());
             return response()->json(['message' => 'Perfil atualizado com sucesso!']);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao atualizar o perfil do contratante: ' . $e->getMessage(), [
                 'user_id' => $request->user()->id,
@@ -56,6 +61,8 @@ class ContratanteController extends Controller
         try {
             $this->profileService->updatePassword($request->user(), $request->validated());
             return response()->json(['message' => 'Senha atualizada com sucesso!']);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao atualizar senha do contratante: ' . $e->getMessage(), [
                 'user_id' => $request->user()->id,
@@ -71,6 +78,8 @@ class ContratanteController extends Controller
         try {
             $this->profileService->deleteProfile($request->user(), $request->validated());
             return response()->json(['message' => 'Perfil deletado com sucesso!']);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao deletar o perfil do contratante: ' . $e->getMessage(), ['user_id' => $request->user()->id]);
             return response()->json(['message' => 'Não foi possível deletar o perfil, tente novamente mais tarde'], 500);

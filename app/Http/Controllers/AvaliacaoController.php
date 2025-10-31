@@ -7,6 +7,7 @@ use App\Services\AvaliacaoService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AvaliacaoController extends Controller
 {
@@ -41,6 +42,8 @@ class AvaliacaoController extends Controller
         try {
             $avaliacao = $this->avaliacaoService->getAvaliacao($dados);
             return response()->json($avaliacao, 200);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao buscar a avaliação: ' . $e->getMessage(), $dados);
             return response()->json(['message' => 'Não foi possível buscar a avaliação, tente novamente mais tarde'], 500);
@@ -54,6 +57,8 @@ class AvaliacaoController extends Controller
         try {
             $avaliacao = $this->avaliacaoService->registerAvaliacao($dados);
             return response()->json($avaliacao, 201);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao registrar a avaliação: ' . $e->getMessage(), $dados);
             return response()->json(['message' => 'Não foi possível registrar a avaliação, tente novamente mais tarde'], 500);
@@ -67,6 +72,8 @@ class AvaliacaoController extends Controller
         try {
             $avaliacao = $this->avaliacaoService->updateAvaliacao($dados, $id);
             return response()->json($avaliacao, 200);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao atualizar a avaliação: ' . $e->getMessage(), array_merge($dados, ['id' => $id]));
             return response()->json(['message' => 'Não foi possível atualizar a avaliação, tente novamente mais tarde'], 500);
@@ -78,6 +85,8 @@ class AvaliacaoController extends Controller
         try {
             $this->avaliacaoService->deleteAvaliacao($id);
             return response()->json(['message' => 'Avaliação deletada com sucesso'], 200);
+        } catch (HttpException $e) {
+            throw $e;
         } catch (Exception $e) {
             Log::error('Erro ao deletar a avaliação: ' . $e->getMessage(), ['id' => $id]);
             return response()->json(['message' => 'Não foi possível deletar a avaliação, tente novamente mais tarde'], 500);
