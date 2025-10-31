@@ -51,8 +51,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('perfil', [ContratadoController::class, 'destroy']);
 
         Route::get('ofertas', [ContratadoOfertaController::class, 'index']);
-        Route::get('ofertas/search/{cidadeId}', [ContratadoOfertaController::class, 'index']);
         Route::get('ofertas/{id}', [ContratadoOfertaController::class, 'show']);
+        Route::post('candidaturas', [ContratadoOfertaController::class, 'store']);
+        Route::delete('candidaturas/{id}', [ContratadoOfertaController::class, 'destroy']);
     });
 
     Route::get('avaliacao', [AvaliacaoController::class, 'show']);
