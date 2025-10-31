@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Contratante;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OfertaRequest;
-use App\Services\OfertaService;
+use App\Services\Contratante\OfertaService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,7 +18,7 @@ class OfertaController extends Controller
         $finalizada = filter_var($request->query('finalizada'), FILTER_VALIDATE_BOOLEAN);
 
         try {
-            $ofertas = $this->ofertaService->listOfertasByUser($request->user(), $finalizada);
+            $ofertas = $this->ofertaService->getOfertas($request->user(), $finalizada);
             return response()->json($ofertas, 200);
         } catch (Exception $e) {
             Log::error('Erro ao listar as ofertas: ' . $e->getMessage());

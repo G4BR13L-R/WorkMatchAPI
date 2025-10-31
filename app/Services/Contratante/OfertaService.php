@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Contratante;
 
 use App\Models\Avaliacao;
 use App\Models\Candidatura;
@@ -11,20 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class OfertaService
 {
-    public function listOfertas(?int $cidadeId = null)
-    {
-        $query = Oferta::with(['endereco.cidade.estado', 'contratante']);
-
-        if (!empty($cidadeId)) {
-            $query->whereHas('endereco', function ($query) use ($cidadeId) {
-                $query->where('cidade_id', $cidadeId);
-            });
-        }
-
-        return $query->get()->toArray();
-    }
-
-    public function listOfertasByUser($user, ?bool $finalizada)
+    public function getOfertas($user, ?bool $finalizada)
     {
         if (!$user) {
             abort(404, 'Usuário não encontrado');
