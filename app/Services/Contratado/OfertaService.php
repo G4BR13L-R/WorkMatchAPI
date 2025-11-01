@@ -42,9 +42,13 @@ class OfertaService
         ]);
 
         if ($finalizada !== null) {
-            $query->where('finalizada', $finalizada)->whereHas('candidaturas', function ($query) use ($contratado) {
-                $query->where('contratado_id', $contratado->id);
-            });
+            $query->where('finalizada', $finalizada);
+
+            if ($finalizada === true) {
+                $query->whereHas('candidaturas', function ($query) use ($contratado) {
+                    $query->where('contratado_id', $contratado->id);
+                });
+            }
         } else {
             $query->whereHas('endereco', function ($query) use ($cidadeId) {
                 $query->where('cidade_id', $cidadeId);
