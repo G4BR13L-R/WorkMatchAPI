@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('autor_id');
             $table->enum('autor_tipo', ['contratante', 'contratado']);
+            $table->string('autor_nome', 255);
             $table->unsignedBigInteger('destinatario_id');
             $table->enum('destinatario_tipo', ['contratante', 'contratado']);
+            $table->string('destinatario_nome', 255);
             $table->unsignedBigInteger('oferta_id');
             $table->foreign('oferta_id')->references('id')->on('ofertas')->onDelete('cascade');
             $table->integer('nota');

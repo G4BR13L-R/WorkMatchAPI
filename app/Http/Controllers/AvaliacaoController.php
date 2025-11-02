@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AvaliacaoRequest;
+use App\Models\Contratado;
+use App\Models\Contratante;
 use App\Services\AvaliacaoService;
 use Exception;
 use Illuminate\Http\Request;
@@ -54,6 +56,9 @@ class AvaliacaoController extends Controller
     {
         $dados = $request->validated();
 
+        $dados['autor_nome'] = $this->getNomeUsuario($dados['autor_tipo'], $dados['autor_id']);
+        $dados['destinatario_nome'] = $this->getNomeUsuario($dados['destinatario_tipo'], $dados['destinatario_id']);
+
         try {
             $avaliacao = $this->avaliacaoService->registerAvaliacao($dados);
             return response()->json($avaliacao, 201);
@@ -68,6 +73,9 @@ class AvaliacaoController extends Controller
     public function update(AvaliacaoRequest $request, int $id)
     {
         $dados = $request->validated();
+
+        $dados['autor_nome'] = $this->getNomeUsuario($dados['autor_tipo'], $dados['autor_id']);
+        $dados['destinatario_nome'] = $this->getNomeUsuario($dados['destinatario_tipo'], $dados['destinatario_id']);
 
         try {
             $avaliacao = $this->avaliacaoService->updateAvaliacao($dados, $id);
@@ -91,5 +99,16 @@ class AvaliacaoController extends Controller
             Log::error('Erro ao deletar a avaliação: ' . $e->getMessage(), ['id' => $id]);
             return response()->json(['message' => 'Não foi possível deletar a avaliação, tente novamente mais tarde'], 500);
         }
+    }
+
+    private function getNomeUsuario(string $tipo, int $id): string
+    {
+        if ($tipo === 'contratante') {
+            $usuario = Contratante::find($id);
+        } else {
+            $usuario = Contratado::find($id);
+        }
+
+        return $usuario ? $usuario->nome : 'Usuário Desconhecido';
     }
 }

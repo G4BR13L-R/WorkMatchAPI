@@ -12,8 +12,10 @@ class Avaliacao extends Model
     protected $fillable = [
         'autor_id',
         'autor_tipo',
+        'autor_nome',
         'destinatario_id',
         'destinatario_tipo',
+        'destinatario_nome',
         'oferta_id',
         'nota',
         'comentario'
