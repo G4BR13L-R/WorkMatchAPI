@@ -36,12 +36,13 @@ class ProfileService
                 'password' => Hash::make($data['password']),
             ]);
 
-            $enderecoData = Arr::only($data, 'cidade_id');
+            $endereco = Endereco::create(['cidade_id' => $data['cidade_id']]);
+
             $contratadoData = Arr::except($data, ['cidade_id', 'password', 'password_confirmation']);
             $contratadoData['user_id'] = $user->id;
+            $contratadoData['endereco_id'] = $endereco->id;
 
             $contratado = Contratado::create($contratadoData);
-            $contratado->endereco()->create($enderecoData);
 
             $token = $user->createToken('auth_token')->plainTextToken;
             $contratado->load('endereco.cidade.estado');
