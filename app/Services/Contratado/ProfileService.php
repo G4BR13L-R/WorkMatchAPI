@@ -36,15 +36,11 @@ class ProfileService
                 'password' => Hash::make($data['password']),
             ]);
 
-            $contratado = Contratado::create([
-                'user_id' => $user->id,
-                'nome' => $data['nome'],
-                'telefone' => $data['telefone'],
-                'email' => $data['email'],
-                'data_nascimento' => $data['data_nascimento'],
-                'cpf' => $data['cpf'],
-                'rg' => $data['rg'],
-            ]);
+            $enderecoData = Arr::only($data, 'cidade_id');
+            $contratadoData = Arr::except($data, ['cidade_id', 'password', 'password_confirmation']);
+
+            $contratado = Contratado::create($contratadoData);
+            $contratado->endereco()->create($enderecoData);
 
             $token = $user->createToken('auth_token')->plainTextToken;
             $contratado->load('endereco.cidade.estado');

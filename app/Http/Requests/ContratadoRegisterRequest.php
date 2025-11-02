@@ -28,6 +28,7 @@ class ContratadoRegisterRequest extends FormRequest
             'data_nascimento' => 'required|date',
             'cpf' => 'required|string|size:11|unique:contratados,cpf',
             'rg' => 'nullable|string|max:20',
+            'cidade_id' => 'required|integer|exists:cidades,id',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|string|min:6',
         ];
@@ -60,6 +61,9 @@ class ContratadoRegisterRequest extends FormRequest
             'cpf.unique' => 'O CPF já está em uso.',
             'rg.string' => 'O campo RG deve ser uma string.',
             'rg.max' => 'O campo RG não pode ter mais de 20 caracteres.',
+            'cidade_id.required' => 'O campo cidade é obrigatório.',
+            'cidade_id.integer' => 'O campo cidade deve ser um inteiro.',
+            'cidade_id.exists' => 'A cidade selecionada é inválida.',
             'password.required' => 'O campo senha é obrigatório.',
             'password.string' => 'O campo senha deve ser uma string.',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
