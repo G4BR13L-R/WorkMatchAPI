@@ -31,29 +31,27 @@ class OfertaService
         $query = Oferta::with([
             'endereco.cidade.estado',
             'contratante',
-            'candidaturas' => function ($query) use ($contratado) {
-                $query->where('contratado_id', $contratado->id)->with([
+            'candidaturas' => function ($q) use ($contratado) {
+                $q->where('contratado_id', $contratado->id)->with([
                     'contratado.endereco.cidade.estado',
                     'status',
                     'oferta.endereco.cidade.estado',
                     'oferta.contratante',
                 ]);
             }
-        ]);
-
-        if ($finalizada !== null) {
-            $query->where('finalizada', $finalizada);
+        ])->when($finalizada !== null, function ($q) use ($finalizada, $contratado) {
+            $q->where('finalizada', $finalizada);
 
             if ($finalizada === true) {
-                $query->whereHas('candidaturas', function ($query) use ($contratado) {
-                    $query->where('contratado_id', $contratado->id);
+                $q->whereHas('candidaturas', function ($sub) use ($contratado) {
+                    $sub->where('contratado_id', $contratado->id);
                 });
             }
-        } else {
-            $query->whereHas('endereco', function ($query) use ($cidadeId) {
-                $query->where('cidade_id', $cidadeId);
+        })->when(!empty($cidadeId), function ($q) use ($cidadeId) {
+            $q->whereHas('endereco', function ($sub) use ($cidadeId) {
+                $sub->where('cidade_id', $cidadeId);
             });
-        }
+        });
 
         return $query->get()->toArray();
     }
