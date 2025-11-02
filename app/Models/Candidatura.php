@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Candidatura extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['contratado_id', 'oferta_id', 'status_id', 'salario'];
     protected $hidden = ['created_at', 'updated_at', 'contratado_id', 'oferta_id', 'status_id'];
 
