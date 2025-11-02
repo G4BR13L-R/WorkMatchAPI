@@ -38,6 +38,7 @@ class ProfileService
 
             $enderecoData = Arr::only($data, 'cidade_id');
             $contratadoData = Arr::except($data, ['cidade_id', 'password', 'password_confirmation']);
+            $contratadoData['user_id'] = $user->id;
 
             $contratado = Contratado::create($contratadoData);
             $contratado->endereco()->create($enderecoData);
