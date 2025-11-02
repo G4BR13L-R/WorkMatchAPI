@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('descricao');
             $table->decimal('salario', 10, 2)->nullable();
             $table->date('data_inicio');
-            $table->date('data_fim')->nullable();
+            $table->date('data_fim');
             $table->boolean('finalizada')->default(false);
             $table->unsignedBigInteger('endereco_id');
             $table->unsignedBigInteger('contratante_id');
