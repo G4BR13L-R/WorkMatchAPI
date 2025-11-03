@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Cnpj;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContratanteUpdateRequest extends FormRequest
@@ -28,7 +29,7 @@ class ContratanteUpdateRequest extends FormRequest
             'nome' => 'required|string|max:255',
             'telefone' => 'required|string|size:11',
             'email' => 'required|string|max:255|email|unique:users,email,' . $userId,
-            'cnpj' => 'required|string|size:14|unique:contratantes,cnpj,' . $contratanteId,
+            'cnpj' => ['required', 'string', 'unique:contratantes,cnpj,' . $contratanteId, new Cnpj],
             'razao_social' => 'required|string|max:255',
             'nome_fantasia' => 'required|string|max:255',
             'logradouro' => 'nullable|string|max:255',
@@ -60,7 +61,6 @@ class ContratanteUpdateRequest extends FormRequest
             'email.unique' => 'O email já está em uso.',
             'cnpj.required' => 'O campo CNPJ é obrigatório.',
             'cnpj.string' => 'O campo CNPJ deve ser uma string.',
-            'cnpj.size' => 'O campo CNPJ deve ter 14 caracteres.',
             'cnpj.unique' => 'O CNPJ já está em uso.',
             'razao_social.required' => 'O campo razão social é obrigatório.',
             'razao_social.string' => 'O campo razão social deve ser uma string.',

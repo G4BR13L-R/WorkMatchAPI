@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Cpf;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContratadoUpdateRequest extends FormRequest
@@ -29,7 +30,7 @@ class ContratadoUpdateRequest extends FormRequest
             'telefone' => 'required|string|size:11',
             'email' => 'required|string|max:255|email|unique:users,email,' . $userId,
             'data_nascimento' => 'required|date',
-            'cpf' => 'required|string|size:11|unique:contratados,cpf,' . $contratadoId,
+            'cpf' => ['required', 'string', 'unique:contratados,cpf,' . $contratadoId, new Cpf],
             'rg' => 'nullable|string|max:20',
             'formacoes' => 'nullable|string',
             'habilidades' => 'nullable|string',
@@ -65,7 +66,6 @@ class ContratadoUpdateRequest extends FormRequest
             'data_nascimento.date' => 'O campo data de nascimento deve ser uma data válida.',
             'cpf.required' => 'O campo CPF é obrigatório.',
             'cpf.string' => 'O campo CPF deve ser uma string.',
-            'cpf.size' => 'O campo CPF deve ter 11 caracteres.',
             'cpf.unique' => 'O CPF já está em uso.',
             'rg.string' => 'O campo RG deve ser uma string.',
             'rg.max' => 'O campo RG não pode ter mais de 20 caracteres.',
