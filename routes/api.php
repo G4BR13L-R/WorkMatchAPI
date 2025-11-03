@@ -56,8 +56,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('candidaturas/{id}', [ContratadoOfertaController::class, 'destroy']);
     });
 
-    Route::get('avaliacao', [AvaliacaoController::class, 'show']);
-    Route::post('avaliacao', [AvaliacaoController::class, 'store']);
-    Route::put('avaliacao/{id}', [AvaliacaoController::class, 'update']);
-    Route::delete('avaliacao', [AvaliacaoController::class, 'destroy']);
+    Route::get('avaliacoes', [AvaliacaoController::class, 'show']);
+    Route::post('avaliacoes', [AvaliacaoController::class, 'store']);
+    Route::put('avaliacoes/{id}', [AvaliacaoController::class, 'update']);
+    Route::delete('avaliacoes', [AvaliacaoController::class, 'destroy']);
 });
